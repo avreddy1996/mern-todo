@@ -38,8 +38,6 @@ const contactSchema = new Schema(
                 default : ''
             }
         }]
-
-
     },
     { timestamps: true }
 );
