@@ -7,11 +7,11 @@ const API_PORT = 3001;
 const app = express();
 const router = require("./routes/user-server-routes");
 // this is our MongoDB database
-const dbRoute = "mongodb://localhost/mern-crud";
+const dbRoute = require("./config/keys");
 
 // connects our back end code with the database
 mongoose.connect(
-    dbRoute,
+    dbRoute.mongoUrl,
     { useNewUrlParser: true }
 );
 

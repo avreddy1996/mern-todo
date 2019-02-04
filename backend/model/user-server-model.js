@@ -4,10 +4,25 @@ const Schema = mongoose.Schema;
 // this will be our data base's data structure
 const DataSchema = new Schema(
     {
-        message: String
+        name: {
+            type: String,
+            required: true
+        },
+        email: {
+            type: String,
+            required: true
+        },
+        password: {
+            type: String,
+            required: true
+        },
+        date: {
+            type: Date,
+            default: Date.now
+        }
     },
     { timestamps: true }
 );
 
 // export the new Schema so we could modify it using Node.js
-module.exports = mongoose.model("Data", DataSchema);
+module.exports = mongoose.model("User", DataSchema);
