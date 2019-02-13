@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const Contact = require("./../model/contact-server-model");
 const contactController =  require('./../controllers/contact-server-controller');
-const userController =  require('./../controllers/user-server-controller');
 const fs = require("fs");
 const multer = require('multer');
 const util = require('util');
@@ -17,7 +16,7 @@ var storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 // this is our get method
 // this method fetches all available data in our database
-router.get("/getContacts",userController.checkAuthentication, contactController.getAllContacts);
+router.get("/getContacts", contactController.getAllContacts);
 
 // this is our update method
 // this method overwrites existing data in our database

@@ -4,6 +4,9 @@ const Schema = mongoose.Schema;
 // this will be our data base's data structure
 const contactSchema = new Schema(
     {
+        user : {
+            type : mongoose.Schema.Types.ObjectId
+        },
         first_name : {
             type : String,
             default : ''

@@ -4,6 +4,8 @@ html,body{
     margin: 0;
     font-weight: 400;
     padding: 0;
+    overflow-x: hidden;
+    background: #e7e7e7;
 }
 h1, h2, h3, h4, h5, h6{
     font-weight: 400;
@@ -75,4 +77,108 @@ h1, h2, h3, h4, h5, h6{
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     border-radius: 50%;
+}
+/*==== join page css starts here ========*/
+.join-card{
+    margin: 1rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    z-index: 1;
+    background: #ffffff;
+    color: #000;
+    -webkit-border-radius: 25px;
+    -moz-border-radius: 25px;
+    border-radius: 25px;
+    -webkit-box-shadow: 1px 1px 10px 1px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 1px 1px 10px 1px rgba(0, 0, 0, 0.2);
+    box-shadow: 1px 1px 10px 1px rgba(0, 0, 0, 0.2);
+}
+.sign-in.join-card.active.transition{
+    z-index: 100 !important;
+}
+.sign-in.join-card{
+    -webkit-transform: translateX(50%);
+    -moz-transform: translateX(50%);
+    -ms-transform: translateX(50%);
+    -o-transform: translateX(50%);
+    transform: translateX(50%);
+}
+.sign-up.join-card{
+    background: #299e26;
+    z-index: 0;
+    -webkit-transform: translateX(-50%);
+    -moz-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    -o-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
+.sign-in.join-card.active{
+    -webkit-animation: loginflip 1s;
+    -o-animation: loginflip 1s;
+    animation: loginflip 1s;
+    z-index: 1;
+}
+.sign-up.join-card.active{
+    -webkit-animation: signupflip 1s;
+    -o-animation: signupflip 1s;
+    animation: signupflip 1s;
+    z-index: 1;
+}
+/*==== keyframes ====*/
+@keyframes loginflip {
+    0%{
+        -webkit-transform: translateX(50%);
+        -moz-transform: translateX(50%);
+        -ms-transform: translateX(50%);
+        -o-transform: translateX(50%);
+        transform: translateX(50%);
+        z-index: 0;
+    }
+    25%{
+        z-index: 0;
+    }
+    50%{
+        -webkit-transform: translateX(-50%);
+        -moz-transform: translateX(-50%);
+        -ms-transform: translateX(-50%);
+        -o-transform: translateX(-50%);
+        transform: translateX(-50%);
+    }
+
+    100%{
+        -webkit-transform: translateX(50%);
+        -moz-transform: translateX(50%);
+        -ms-transform: translateX(50%);
+        -o-transform: translateX(50%);
+        transform: translateX(50%);
+        z-index: 1;
+    }
+}
+@keyframes signupflip {
+    0%{
+        -webkit-transform: translateX(-50%);
+        -moz-transform: translateX(-50%);
+        -ms-transform: translateX(-50%);
+        -o-transform: translateX(-50%);
+        transform: translateX(-50%);
+        z-index: -1;
+    }
+    50%{
+        -webkit-transform: translateX(50%);
+        -moz-transform: translateX(50%);
+        -ms-transform: translateX(50%);
+        -o-transform: translateX(50%);
+        transform: translateX(50%);
+    }
+    100%{
+        -webkit-transform: translateX(-50%);
+        -moz-transform: translateX(-50%);
+        -ms-transform: translateX(-50%);
+        -o-transform: translateX(-50%);
+        transform: translateX(-50%);
+        z-index: 1;
+    }
 }

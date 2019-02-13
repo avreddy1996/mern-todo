@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { TextField, Fab, FormControl, Select, MenuItem, Button } from '@material-ui/core'
+import { Link } from "react-router-dom";
 
 class CreateContact extends Component{
     constructor(props){
@@ -48,20 +49,38 @@ class CreateContact extends Component{
         contact.append('avatar', this.state.originalImageFile);
         contact.append('first_name', this.state.firstName);
         contact.append('last_name', this.state.lastName);
-        contact.append('emails', JSON.stringify(this.state.emails));
-        contact.append('phones', JSON.stringify(this.state.phones));
+        contact.append('emails', JSON.stringify(getValidEmails(this.state.emails)));
+        contact.append('phones', JSON.stringify(getValidPhones(this.state.phones)));
         var self = this;
         axios.post('/api/putContact',contact,{"Accept" : "application/json"},)
             .then((res)=>{
                 if(res.data.success){
-                    document.getElementById('goBack').click();
+                    document.getElementById('goHome').click();
                 }else{
                     console.log(res.data);
                 }
             })
             .catch((err)=>{
                 console.log(err)
-            })
+            });
+        function getValidEmails(emails) {
+            var arr=[];
+            emails.forEach((email)=>{
+                if(email.email_id){
+                    arr.push(email);
+                }
+            });
+            return arr;
+        }
+        function getValidPhones(phones) {
+            var arr=[];
+            phones.forEach((phone)=>{
+                if(phone.phone_num){
+                    arr.push(phone);
+                }
+            });
+            return arr;
+        }
     }
     addEmail(e){
         e.preventDefault();
@@ -103,7 +122,7 @@ class CreateContact extends Component{
     }
     render(){
         return (<div>
-            <a href={'/'} id={'goBack'} style={{display:'none'}}>hidden</a>
+            <Link to={'/'} id={'goHome'} style={{display:'none'}}>hidden</Link>
             <div className={'form-container'}>
                 <label htmlFor={'fileInput'} className={'form-image'}>
                     <div className={'square-image'}>

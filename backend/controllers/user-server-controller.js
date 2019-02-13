@@ -25,15 +25,39 @@ userController = {
             // Hash password before saving in database
             bcrypt.genSalt(10, (err, salt) => {
                 bcrypt.hash(newUser.password, salt, (err, hash) => {
-                    if (err) throw err;
+                    if (err) {res.status(400).send('Unable to register user');throw err;}
                     newUser.password = hash;
                     newUser
                         .save()
                         .then(user => {
+                            const payload = {
+                                id: user._id,
+                                name: user.name
+                            };
+                            // Sign token
+                            jwt.sign(
+                                payload,
+                                keys.secretOrKey,
+                                {
+                                    expiresIn: 31556926 // 1 year in seconds
+                                },
+                                (err, token) => {
+                                    if(token) {
+                                        res.json({
+                                            success: true,
+                                            token: token
+                                        });
+                                    }else{
+                                        res.status(400).send('Registered Successfully try logging in');
+                                    }
+                                }
+                            );
 
-                            res.json(user);
                         })
-                        .catch(err => console.log(err));
+                        .catch(err => {
+                            console.log(err);
+                            res.status(400).send('Unable to register user')
+                        });
                 });
             });
         })
@@ -49,7 +73,7 @@ userController = {
         User.findOne({ email }).then(user => {
             // Check if user exists
             if (!user) {
-                return res.status(404).json({emailnotfound: "Email not found"});
+                return res.status(404).send("Email not found");
             }
             // Check password
             bcrypt.compare(password, user.password).then(isMatch => {
@@ -70,40 +94,53 @@ userController = {
                         (err, token) => {
                             res.json({
                                 success: true,
-                                token: "Bearer " + token
+                                token: token
                             });
                         }
                     );
                 } else {
                     return res
                         .status(400)
-                        .json({passwordincorrect: "Password incorrect"});
+                        .send("Password incorrect");
                 }
             });
         });
     },
+    getUserFromToken : function (req,done) {
+        getUSerId(req, done);
+    },
     checkAuthentication : function (req, res, next) {
-        if(req.headers && req.headers.authorization){
-            var authorization = headers.authorization,
-                decoded;
-            try {
-                decoded = jwt.verify(authorization, secret.secretToken);
-            } catch (e) {
-                return res.status(401).send('unauthorized');
+        getUSerId(req, function (err, data) {
+            if(data && data.authorized){
+                res.json({authorized:true,id : data.id});
+            }else{
+                res.status(401).send(err);
             }
-            var userId = decoded.id;
-            // Fetch the user by id
-            User.findOne({_id: userId}).then(function(user){
-                // Do something with the user
-                if(user){
-                    next();
-                }else{
-                    res.render('Join', {url : '/login'});
-                }
-            });
-        }else{
-            res.render('Join', {url : '/login'});
-        }
-    }
+        });
+    },
+
 };
+function getUSerId(req,done){
+    if(req.headers && req.headers.authorization){
+        var authorization = req.headers.authorization,
+            decoded;
+        try {
+            decoded = jwt.verify(authorization, keys.secretOrKey);
+        } catch (e) {
+            return done('unauthorised',null);
+        }
+        var userId = decoded.id;
+        // Fetch the user by id
+        User.findOne({_id: userId}).then(function(user){
+            // Do something with the user
+            if(user){
+                done(null,{authorized:true,id : user._id});
+            }else{
+                return done('unauthorised',null);
+            }
+        });
+    }else{
+        return done('unauthorised',null);
+    }
+}
 module.exports = userController;

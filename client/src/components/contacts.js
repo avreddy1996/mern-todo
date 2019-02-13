@@ -1,8 +1,8 @@
 import React, {Component} from "react";
 import axios from "axios";
 import {Link} from 'react-router-dom'
-import { Checkbox, Avatar, } from '@material-ui/core';
-
+import { Checkbox, Avatar,  } from '@material-ui/core';
+import CheckAuthentication from './check-authentication';
 class ContactsList extends Component{
     constructor(props){
         super(props);
@@ -154,4 +154,4 @@ class ContactRow extends Component{
         )
     }
 }
-export default ContactsList;
+export default CheckAuthentication(ContactsList);
