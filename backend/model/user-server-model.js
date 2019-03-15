@@ -19,6 +19,14 @@ const DataSchema = new Schema(
         date: {
             type: Date,
             default: Date.now
+        },
+        isVerified : {
+            type : Boolean,
+            default: false
+        },
+        otp : {
+            type : String,
+            default : ''
         }
     },
     { timestamps: true }

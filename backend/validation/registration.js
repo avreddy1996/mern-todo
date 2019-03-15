@@ -2,7 +2,7 @@ const Validator = require("validator");
 const isEmpty = require("is-empty");
 
 module.exports = function validateRegisterInput(data) {
-    let errors = {};
+    let errors = '';
 
     data.name = !isEmpty(data.name) ? data.name : "";
     data.email = !isEmpty(data.email) ? data.email : "";
@@ -10,28 +10,28 @@ module.exports = function validateRegisterInput(data) {
     data.password2 = !isEmpty(data.password2) ? data.password2 : "";
 
     if (Validator.isEmpty(data.name)) {
-        errors.name = "Name field is required";
+        errors += "Name field is required\n";
     }
 
     if (Validator.isEmpty(data.email)) {
-        errors.email = "Email field is required";
+        errors += "Email field is required\n";
     } else if (!Validator.isEmail(data.email)) {
-        errors.email = "Email is invalid";
+        errors += "Email is invalid\n";
     }
 
     if (Validator.isEmpty(data.password)) {
-        errors.password = "Password field is required";
+        errors += "Password field is required\n";
     }
 
     if (Validator.isEmpty(data.password2)) {
-        errors.password2 = "Confirm password field is required";
+        errors += "Confirm password field is required\n";
     }
 
     if (!Validator.isLength(data.password, { min: 6, max: 30 })) {
-        errors.password = "Password must be at least 6 characters";
+        errors += "Password must be at least 6 characters\n";
     }
     if (!Validator.equals(data.password, data.password2)) {
-        errors.password2 = "Passwords must match";
+        errors += "Passwords must match\n";
     }
 
     return {
